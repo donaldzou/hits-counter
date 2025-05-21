@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    modules: ['@pinia/nuxt'],
+    modules: ['@pinia/nuxt', 'nuxt-security'],
     compatibilityDate: '2024-11-01',
     devtools: { enabled: true },
     css: [
@@ -14,10 +14,6 @@ export default defineNuxtConfig({
             websocket: true
         }
     },
-
-    plugins: [
-
-    ],
     app: {
         pageTransition: { name: 'page', mode: 'out-in' },
         head: {
@@ -41,6 +37,15 @@ export default defineNuxtConfig({
                     async: true
                 }
             ]
+        }
+    },
+    routeRules: {
+        '/api/history': {
+            security: {
+                corsHandler: {
+                    origin: '*'
+                }
+            }
         }
     }
 })
