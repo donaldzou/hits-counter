@@ -13,6 +13,8 @@ import {
 	PointElement, Filler
 } from 'chart.js';
 import { Line, Bar } from 'vue-chartjs'
+import annotationPlugin from 'chartjs-plugin-annotation';
+import {computed} from "vue";
 Chart.register(
 	LineElement,
 	BarElement,
@@ -24,7 +26,8 @@ Chart.register(
 	Tooltip,
 	CategoryScale,
 	PointElement,
-	Filler
+	Filler,
+	annotationPlugin
 );
 
 const url = ref("")
@@ -35,6 +38,7 @@ const historyData = ref({
 	today_hits: 0,
 	history: []
 })
+const average = ref(0)
 
 const getHistory = async () => {
 	if (url.value){
@@ -45,12 +49,39 @@ const getHistory = async () => {
 		})
 		const data = await $fetch('/api/history?' + params.toString())
 		historyData.value = data;
+		average.value = 0;
+		if (historyData.value.history.length > 0){
+			average.value = Math.floor(historyData.value.history.map(x => x.hit_count).reduce((x, y) => x + y) / historyData.value.history.length)
+		}
 		loadingHistoryData.value = false;
 		loaded.value = true;
 	}
 }
 
+
 const chartOption = computed(() => {
+	let annotation = (average.value === 0 ? undefined : {
+		annotations: {
+			line1: {
+				type: 'line',
+				yMin: average.value,
+				yMax: average.value,
+				borderDash: [10],
+				borderColor: '#ffffff40',
+				borderWidth: 2,
+				label: {
+					content: `Average: ${average.value}`,
+					display: true,
+					font: {
+						size: 14,
+						family: '"JetBrains Mono", monospace'
+					},
+				}
+			}
+		}
+	})
+
+
 	return {
 		responsive: true,
 		plugins: {
@@ -63,7 +94,8 @@ const chartOption = computed(() => {
 						return `${tooltipItem.formattedValue} Hit(s)`
 					}
 				}
-			}
+			},
+			annotation: annotation
 		},
 		scales: {
 			x: {

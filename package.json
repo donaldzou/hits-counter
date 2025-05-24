@@ -17,6 +17,7 @@
     "bootstrap": "^5.3.4",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.8",
+    "chartjs-plugin-annotation": "^3.1.0",
     "dayjs": "^1.11.13",
     "engine.io": "^6.6.4",
     "nuxt": "^3.16.2",
