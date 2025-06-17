@@ -84,6 +84,9 @@ onBeforeRouteLeave(() => {
 
 			<div class="d-flex flex-column gap-3 align-items-center container" id="createBadgeForm">
 				<h4 class="mb-4 text-center">Create Your Badge</h4>
+				<div class="alert alert-success text-center rounded-3">
+					If you would like to have your count start at some other value, please open an <a target="_blank" href="https://github.com/donaldzou/hits-counter/issues/new/choose">issue</a> and I will update it for you ASAP.
+				</div>
 				<div class="form-floating">
 					<input type="url" class="form-control rounded-3" id="content"
 					       v-model="badgeData.url"
