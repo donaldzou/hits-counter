@@ -1,3 +1,6 @@
+> [!TIP]
+> For users who doens't want to start counting at 0, please open a ticket to provide the count and your URL, and I will update it for you as soon as possible :) 
+
 # Hits Counter
 
 Due to the recent close down of [hits.seeyoufarm.com](https://github.com/gjbae1212/hit-counter), I decided to recreate the same service. <br>Thanks <a href="https://github.com/gjbae1212">@gjbae1212</a> for the hardworking.
