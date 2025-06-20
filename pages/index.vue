@@ -6,7 +6,8 @@ const badgeData = reactive({
 	url: "",
 	label: "",
 	icon: "",
-	color: ""
+	color: "",
+	tz: "UTC"
 })
 
 const preview = ref(false)
@@ -50,6 +51,12 @@ let hitSummary: HitSummary | undefined = undefined
 await useFetch("/api/hitSummary").then(res => {
 	hitSummary = res.data.value as HitSummary;
 })
+
+let timezones: Array<string> = []
+await useFetch("/api/availableTimezones").then(res => {
+	timezones = res.data.value as Array<string>
+})
+
 onBeforeRouteLeave(() => {
 	$socket.disconnect();
 })
@@ -103,8 +110,17 @@ onBeforeRouteLeave(() => {
 					<suspense>
 						<IconPicker @icon="icon => badgeData.icon = icon"></IconPicker>
 					</suspense>
-
 					<ColorPicker @color="color => badgeData.color = color"></ColorPicker>
+				</div>
+				<div class="form-floating">
+					<select type="text" class="form-select rounded-3" id="timezone"
+					       v-model="badgeData.tz"
+					       >
+						<option v-for="tz in timezones" :value="tz">
+							{{ tz }}
+						</option>
+					</select>
+					<label for="label">Timezone</label>
 				</div>
 				<div>
 					<button class="btn bg-secondary w-100 rounded-3 btn-lg border fw-bold"
