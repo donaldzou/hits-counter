@@ -31,11 +31,11 @@ export default defineNuxtConfig({
                 { rel: 'icon', type: 'image/png', href: '/Icon-1.png' },
             ],
             script: [
-                // {
-                //     src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2283617751904576',
-                //     crossorigin: 'anonymous',
-                //     async: true
-                // }
+                {
+                    src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2283617751904576',
+                    crossorigin: 'anonymous',
+                    async: true
+                }
             ]
         }
     },

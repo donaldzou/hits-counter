@@ -20,7 +20,6 @@
     "chartjs-plugin-annotation": "^3.1.0",
     "dayjs": "^1.11.13",
     "engine.io": "^6.6.4",
-    "express.js": "^1.0.0",
     "nuxt": "^3.16.2",
     "nuxt-security": "^2.2.0",
     "pg": "^8.14.1",
