@@ -4,6 +4,8 @@ import { v4 } from "uuid";
 import {getIO} from "~/server/utils/socket";
 
 export default defineEventHandler(async (event) => {
+	console.log(event.node.req)
+
 	const query = getQuery(event)
 	let currentCount = 1;
 	let totalCount = 1;
@@ -11,7 +13,7 @@ export default defineEventHandler(async (event) => {
 	const timezone: string = query.tz as string
 	if (url && url.replace(" ", "").length > 0){
 		const io = getIO()
-		if (io) {
+		if (io && io.engine.clientsCount > 0) {
 			io.emit('hit', query.url)
 		}
 		const total =
