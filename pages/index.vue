@@ -20,7 +20,7 @@ const generate = async () => {
 import dayjs from 'dayjs';
 import { v4 } from "uuid";
 
-const { $socket } = useNuxtApp()
+
 
 interface hit {
 	uuid: PropertyKey,
@@ -28,7 +28,7 @@ interface hit {
 	url: String
 }
 const hits: Ref<hit[]> = ref([])
-
+const { $socket } = useNuxtApp()
 if ($socket){
 	if ($socket.disconnected){
 		$socket.connect()
@@ -41,7 +41,9 @@ if ($socket){
 		})
 	});
 }
-
+onBeforeRouteLeave(() => {
+	$socket.disconnect();
+})
 
 interface HitSummary {
 	urlCount: Number,
@@ -57,9 +59,7 @@ await useFetch("/api/availableTimezones").then(res => {
 	timezones = res.data.value as Array<string>
 })
 
-onBeforeRouteLeave(() => {
-	$socket.disconnect();
-})
+
 </script>
 
 <template>

@@ -1,10 +1,14 @@
 import { io } from "socket.io-client"
 
 export default defineNuxtPlugin(() => {
-	const socket = io()
-	return {
-		provide: {
-			socket: socket
+	if (import.meta.client){
+		const socket = io({
+			transports: ["websocket"], // Optional: to force WebSocket and avoid polling
+		})
+		return {
+			provide: {
+				socket: socket
+			}
 		}
 	}
 })
