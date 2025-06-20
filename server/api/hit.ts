@@ -4,7 +4,7 @@ import { v4 } from "uuid";
 import {getIO} from "~/server/utils/socket";
 
 export default defineEventHandler(async (event) => {
-	console.log(event.node.req)
+	console.log(event.node.req.headers)
 
 	const query = getQuery(event)
 	let currentCount = 1;
