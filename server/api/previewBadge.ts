@@ -7,7 +7,8 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     let currentCount = 0;
     let totalCount = 0;
-    if (query.url && query.url.replace(" ", "").length > 0){
+    const url: string = query.url as string
+    if (url && url.replace(" ", "").length > 0){
         const res = await pool.query(
             'SELECT * FROM tracking_urls WHERE url = $1', [query.url])
 

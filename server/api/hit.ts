@@ -7,9 +7,11 @@ export default defineEventHandler(async (event) => {
 	const query = getQuery(event)
 	let currentCount = 1;
 	let totalCount = 1;
-	if (query.url && query.url.replace(" ", "").length > 0){
+	const url: string = query.url as string
+	const timezone: string = query.tz as string
+	if (url && url.replace(" ", "").length > 0){
 		const io = getIO()
-		if (io && io.engine.clientsCount > 0) {
+		if (io) {
 			io.emit('hit', query.url)
 		}
 		const total =
@@ -18,11 +20,16 @@ export default defineEventHandler(async (event) => {
 			const newId = v4().toString()
 			await pool.query('INSERT INTO tracking_urls (id, url, total_hits) VALUES ($1, $2, 1);', [newId, query.url])
 			await pool.query(`CREATE TABLE "${newId}" (hit_date DATE, hit_count INT)`)
-			await pool.query(`INSERT INTO "${newId}" (hit_date, hit_count) VALUES (NOW()::DATE, 1)`)
+			await pool.query(`INSERT INTO "${newId}" (hit_date, hit_count) VALUES ((NOW()::DATE AT TIME ZONE $1), 1)`, [timezone ? timezone : 'UTC'])
 		}else{
 			totalCount = total.rows[0].total_hits
 			const existId = total.rows[0].id;
-			const newhit = await pool.query(`SELECT update_hit_count_dynamic('${existId}')`)
+			let newhit;
+			if (timezone){
+				newhit = await pool.query(`SELECT update_hit_count_dynamic('${existId}', '${timezone}')`)
+			}else{
+				newhit = await pool.query(`SELECT update_hit_count_dynamic('${existId}', 'UTC')`)
+			}
 			currentCount = newhit.rows[0].update_hit_count_dynamic
 
 		}
