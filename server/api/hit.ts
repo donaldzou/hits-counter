@@ -4,7 +4,7 @@ import { v4 } from "uuid";
 import {getIO} from "~/server/utils/socket";
 
 export default defineEventHandler(async (event) => {
-	console.log(`URL: ${event.node.req.url} | IP: ${getRequestIP(event)}`)
+	console.log(`URL: ${event.node.req.url} | IP: ${event.node.req.headers['do-connecting-ip']}`)
 
 	const query = getQuery(event)
 	let currentCount = 1;
