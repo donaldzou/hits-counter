@@ -12,15 +12,10 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
             methods: ["GET", "POST"]
         }
     });
-
     io.bind(engine);
-
     io.on("connection", (socket) => {
         console.log("Connected Socket: " + socket.id + " | Connected Total: " + io.engine.clientsCount)
     });
-
-
-
     nitroApp.router.use("/socket.io", defineEventHandler({
         handler(event) {
             engine.handleRequest(event.node.req, event.node.res);
@@ -35,6 +30,5 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
             }
         }
     }));
-
     setIO(io)
 });

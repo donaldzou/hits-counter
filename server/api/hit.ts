@@ -19,6 +19,9 @@ export default defineEventHandler(async (event) => {
 		const total =
 			await pool.query(`UPDATE tracking_urls AS T SET total_hits = total_hits + 1 WHERE T.url = $1 RETURNING T.total_hits, T.id`, [query.url])
 		if (total.rowCount === 0){
+			if (io && io.engine.clientsCount > 0) {
+				io.emit('newUrl', query.url)
+			}
 			const newId = v4().toString()
 			await pool.query('INSERT INTO tracking_urls (id, url, total_hits) VALUES ($1, $2, 1);', [newId, query.url])
 			await pool.query(`CREATE TABLE "${newId}" (hit_date DATE, hit_count INT)`)

@@ -34,24 +34,34 @@ if ($socket){
 		$socket.connect()
 	}
 	$socket.on("hit", (url: string) => {
+		hitSummary.urlTotalHits += 1
 		hits.value.unshift({
 			uuid: v4().toString(),
 			time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 			url: url
 		})
 	});
+	$socket.on('newUrl', () => {
+		hitSummary.urlCount += 1
+	})
 }
 onBeforeRouteLeave(() => {
 	$socket.disconnect();
 })
 
 interface HitSummary {
-	urlCount: Number,
-	urlTotalHits: Number
+	urlCount: number,
+	urlTotalHits: number
 }
-let hitSummary: HitSummary | undefined = undefined
+const hitSummary: HitSummary = reactive({
+	urlCount: 0,
+	urlTotalHits: 0
+})
+
 await useFetch("/api/hitSummary").then(res => {
-	hitSummary = res.data.value as HitSummary;
+	let value = res.data.value as HitSummary
+	hitSummary.urlCount = value.urlCount;
+	hitSummary.urlTotalHits = value.urlTotalHits;
 })
 
 let timezones: Array<string> = []
