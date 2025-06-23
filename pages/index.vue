@@ -36,7 +36,7 @@ if ($socket){
 		hitSummary.urlTotalHits += 1
 		hits.value.unshift({
 			uuid: v4().toString(),
-			time: dayjs().format('YYYY-MM-DD HH:mm:ss:SSS'),
+			time: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS'),
 			url: url
 		})
 	});
