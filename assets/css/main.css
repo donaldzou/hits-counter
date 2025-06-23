@@ -12,11 +12,11 @@
     width: 100%;
 }
 
-@media screen and (min-width: 576px) {
-    #createBadgeForm > *{
-        width: 500px;
-    }
-}
+/*@media screen and (min-width: 576px) {*/
+/*    #createBadgeForm > *{*/
+/*        width: 500px;*/
+/*    }*/
+/*}*/
 
 .modalBackground{
     position: absolute;

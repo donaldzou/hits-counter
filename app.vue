@@ -52,6 +52,5 @@ useSeoMeta({
 .page-leave-to {
 	opacity: 0;
 	filter: blur(8px);
-	transform: translateY(30px);
 }
 </style>

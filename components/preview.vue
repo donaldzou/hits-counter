@@ -15,61 +15,47 @@ const getHost = () => {
 const getHtml = computed(() => {
 	return `<img src="${getHost()}/api/hit?${props.params}">`
 })
-
 const jsonOutput = ref(false)
 </script>
 
 <template>
-	<div class="d-flex gap-3 flex-column text-center" >
-		<hr>
-		<div >
-			<h5 class="mb-3">Result</h5>
-			<img :src="'/api/previewBadge?'+params" alt="badge">
-		</div>
-		<h6>Insert In Your File</h6>
-		<div class="d-flex gap-2 flex-column">
-			<div class="card">
-				<div class="card-header">
-					URL
-				</div>
-				<div class="card-body">
-					<samp>
-						{{getHost()}}/api/hit?{{params + (jsonOutput ? '&output=json':'')}}
-					</samp>
-					<div class="d-flex mt-2">
-						<div class="form-check form-switch ms-auto">
-							<label class="form-check-label" for="jsonOutput">
-								<small>Output in JSON</small>
-							</label>
-							<input
-								v-model="jsonOutput"
-								class="form-check-input" type="checkbox" role="switch" id="jsonOutput">
-						</div>
-					</div>
-				</div>
+	<div class="d-flex gap-3 flex-column">
+		<div>
+			<div class="p-3 border border-white d-flex align-items-center rounded-3">
+				<h5 class="mb-0 me-auto">Result</h5>
+				<img :src="'/api/previewBadge?'+params" alt="badge">
 			</div>
 		</div>
-		<div class="d-flex gap-2 flex-column">
-			<div class="card">
+		<div class="p-3 border border-white rounded-3 d-flex gap-3 flex-column">
+			<h5 class="mb-0">Copy & paste it in your file</h5>
+			<div class="card rounded-3">
+				<div class="card-header d-flex align-items-center">
+					URL
+					<div class="form-check form-switch ms-auto">
+						<label class="form-check-label" for="jsonOutput">
+							<small>JSON</small>
+						</label>
+						<input v-model="jsonOutput" class="form-check-input" type="checkbox" role="switch" id="jsonOutput">
+					</div>
+				</div>
+				<div class="card-body">
+					<pre class="mb-0">{{getHost()}}/api/hit?{{(jsonOutput ? 'output=json&':'') + params}}</pre>
+				</div>
+			</div>
+			<div class="card rounded-3">
 				<div class="card-header">
 					Markdown
 				</div>
 				<div class="card-body">
-					<samp>
-						![Badge]({{getHost()}}/api/hit?{{params}})
-					</samp>
+					<pre class="mb-0">![Badge]({{getHost()}}/api/hit?{{params}})</pre>
 				</div>
 			</div>
-		</div>
-		<div class="d-flex gap-2 flex-column">
-			<div class="card">
+			<div class="card rounded-3">
 				<div class="card-header">
 					HTML
 				</div>
 				<div class="card-body">
-					<samp v-text="getHtml">
-
-					</samp>
+					<pre class="mb-0" v-text="getHtml"></pre>
 				</div>
 			</div>
 		</div>

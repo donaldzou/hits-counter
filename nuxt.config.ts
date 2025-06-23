@@ -46,6 +46,13 @@ export default defineNuxtConfig({
                     origin: '*'
                 }
             }
+        },
+        '/api/hit': {
+            security: {
+                corsHandler: {
+                    origin: '*'
+                }
+            }
         }
     }
 })

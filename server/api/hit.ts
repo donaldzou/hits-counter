@@ -36,7 +36,6 @@ export default defineEventHandler(async (event) => {
 				newhit = await pool.query(`SELECT update_hit_count_dynamic('${existId}', 'UTC')`)
 			}
 			currentCount = newhit.rows[0].update_hit_count_dynamic
-
 		}
 	}
 	if (query.output && query.output === 'json'){
