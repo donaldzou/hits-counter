@@ -19,10 +19,15 @@ const props = defineProps([
 					<div v-if="hits.length === 0">
 						<i class="bi bi-record2-fill me-2 text-danger-emphasis animate__slower animate__animated animate__flash animate__infinite"></i>Waiting...
 					</div>
-					<div v-for="hit in hits" :key="hit.uuid">
-						<span class="badge text-bg-light">
-							{{ hit.time }}
-						</span> <strong>{{ hit.url }}</strong>
+					<div v-for="hit in hits" :key="hit.uuid" class="d-flex align-items-center gap-2">
+						<small>{{ hit.time }}</small>
+						<RouterLink :to="'/history?url=' + hit.url">
+							<span class="badge text-bg-light ">
+								<strong>
+									{{ hit.url }}
+								</strong>
+							</span>
+						</RouterLink>
 					</div>
 				</div>
 			</div>

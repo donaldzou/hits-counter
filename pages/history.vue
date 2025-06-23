@@ -39,6 +39,9 @@ const historyData = ref({
 	history: []
 })
 const average = ref(0)
+const route = useRoute()
+
+
 
 const getHistory = async () => {
 	if (url.value){
@@ -57,8 +60,6 @@ const getHistory = async () => {
 		loaded.value = true;
 	}
 }
-
-
 const chartOption = computed(() => {
 	let annotation = (average.value === 0 ? undefined : {
 		annotations: {
@@ -128,7 +129,6 @@ const chartOption = computed(() => {
 		}
 	}
 })
-
 const historyChartData = computed(() => {
 	return {
 		labels: historyData.value.history.map(x => x.hit_date),
@@ -149,6 +149,14 @@ const historyChartData = computed(() => {
 		],
 	}
 })
+
+onMounted(() => {
+	if (route.query.url){
+		url.value = route.query.url as string
+		getHistory()
+	}
+})
+
 </script>
 
 <template>
