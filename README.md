@@ -29,6 +29,7 @@ Once you're satisfied with the result, simply copy & paste the code below to you
 ## Other Features
 
 - [Historical data of your URL](https://hitscounter.dev/history)
+  - Predefine with your URL: `https://hitscounter.dev/history?url=your_url_here`
 
 ## Self Hosting
 
@@ -56,3 +57,40 @@ DATABASE=
 | `url`            | `VARCHAR`    |               |
 | `track_datatime` | `DATE`       | `NOW()::DATE` |
 | `total_hits`     | `INTEGER`    |               |
+
+### Required Routine
+
+```sql
+create function update_hit_count_dynamic(tablename text, customtimezone text) returns integer
+    language plpgsql
+as
+$$
+DECLARE
+    new_count INTEGER;
+    date_today DATE;
+    row_exists BOOLEAN;
+BEGIN
+    EXECUTE format('SELECT (NOW() AT TIME ZONE %L)::DATE', customTimezone)
+        INTO date_today;
+
+    -- Check if the row for today exists
+    EXECUTE format('SELECT EXISTS (SELECT 1 FROM %I WHERE hit_date = $1)', tablename)
+        INTO row_exists
+        USING date_today;
+
+    IF NOT row_exists THEN
+        -- Insert a new row for today
+        EXECUTE format('INSERT INTO %I (hit_date, hit_count) VALUES ($1, 1)', tablename)
+            USING date_today;
+        new_count := 1;
+    ELSE
+        -- Update existing row and return the new count
+        EXECUTE format('UPDATE %I SET hit_count = hit_count + 1 WHERE hit_date = $1 RETURNING hit_count', tablename)
+            INTO new_count
+            USING date_today;
+    END IF;
+
+    RETURN new_count;
+END;
+$$;
+```
